@@ -1,0 +1,32 @@
+.is-invalid-select{
+    height: auto;
+    border: 1px #dc3545 solid!important;
+}
+.is-valid-select{
+    height: auto;
+    border: 1px #28a745 solid!important;
+}
+.is-invalid{
+    height: auto;
+    border: 1px #dc3545 solid!important;
+}
+.is-valid{
+    height: auto;
+    border: 1px #28a745 solid!important;
+}
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+.select2-on-top{
+    z-index: 1060!important;
+}
+.my-swal {
+    z-index: 1500;
+}
+.my-swal2 {
+    z-index: 1500;
+}
+.swal-responsive{
+    width:50%;
+}
