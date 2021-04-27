@@ -9,6 +9,7 @@ function logIn() {
             '</form>' +
             '</div>',
         confirmButtonText: "Submit",
+        showLoaderOnConfirm: true,
         customClass: {
             confirmButton: "btn btn-succes",
         },
@@ -24,8 +25,8 @@ function logIn() {
             }
         },
     }).then((result) => {
-        showLoad("Attendi ...");
         if (result.value) {
+            showLoad("Attendi ...");
             $.post("/login/rest/signin", result.value).done(function (resp) {
                 if (resp != null) {
                     if (resp.tipo == 1) {
