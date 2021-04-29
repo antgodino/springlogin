@@ -32,6 +32,11 @@ public class LoginController {
         return "redirect:/login";
     }
 
+    @GetMapping(path = "/login/firstacces")
+    public String firstAccess(HttpServletRequest request, Model model) {
+        return "firstAccess";
+    }
+
     @ModelAttribute("title")
     public String title() {
         return "Log In";

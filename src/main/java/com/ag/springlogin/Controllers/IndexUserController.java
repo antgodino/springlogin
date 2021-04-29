@@ -11,11 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class IndexUserController {
 
-
     @GetMapping(path = "/user")
     public String admin(HttpServletRequest request, Model model) {
         User user = (User) request.getSession().getAttribute("user");
-
         if (user == null) {
             return "redirect:login";
         } else if (user != null && user.getTipo() == 2) {

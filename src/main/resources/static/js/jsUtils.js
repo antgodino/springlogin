@@ -1,12 +1,17 @@
+/*  text manipulation  */
 function capitalize(s) {
     return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
 function currencyFormat(num) {
     return '&euro;' + num.toFixed(0).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
 }
+
 function currencyFormatDecimal(num) {
     return '&euro;' + num.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
 }
+
+/*   swal function    */
 function swalCountDownFunc(title, message, func) {
     let timerInterval;
     Swal.fire({

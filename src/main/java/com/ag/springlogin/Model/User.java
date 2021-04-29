@@ -14,15 +14,18 @@ public class User {
     private String password;
     private String email;
     private int tipo;
+    private int stato;
 
     public User() {
     }
 
-    public User(String username, String password, String email, int tipo) {
+    public User(Long id, String username, String password, String email, int tipo, int stato) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.tipo = tipo;
+        this.stato = stato;
     }
 
     public Long getId() {
@@ -65,6 +68,14 @@ public class User {
         this.tipo = tipo;
     }
 
+    public int getStato() {
+        return stato;
+    }
+
+    public void setStato(int stato) {
+        this.stato = stato;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -73,6 +84,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", tipo=" + tipo +
+                ", stato=" + stato +
                 '}';
     }
 }

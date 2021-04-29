@@ -9,6 +9,7 @@ function checkEmail(email) {
         return false;
     }
 }
+
 function checkCF(cf) {
     var codicefiscale = cf.val();
     var esito = true;
@@ -49,6 +50,7 @@ function checkCF(cf) {
         return false;
     }
 }
+
 function checkObblFieldsContent(content) {
     var err = false;
     content.find('input.obbligatory').each(function () {
@@ -77,6 +79,7 @@ function checkObblFieldsContent(content) {
     });
     return err;
 }
+
 function resetInput() {
     $('.form-control').val('');
     $('.form-control').removeClass('is-valid');
@@ -87,6 +90,38 @@ function resetInput() {
     $('select').trigger('change');
     $('div.dropdown.bootstrap-select.form-control.kt-').removeClass('is-valid is-valid-select');
 }
+
+function checkPassword(pwd) {
+    const regex = new RegExp('(?=^.{8,}$)(?=.*\\d)(?=.*[!@#$%^&*]+)(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$');
+    return regex.test(pwd.val())
+}
+
+function checkChagePwd(npwd, n2pwd) {//return true se è tutto corretto
+    if (checkPassword(npwd)) {
+
+        if (npwd.val() == n2pwd.val()) {
+            npwd.removeClass("is-invalid").addClass("is-valid");
+            n2pwd.removeClass("is-invalid").addClass("is-valid");
+            return true;
+        } else {
+            n2pwd.removeClass("is-valid").addClass("is-invalid");
+            swalError("Errore!", "Le due password non coincidono");
+        }
+    } else {
+        n2pwd.removeClass("is-valid").addClass("is-invalid");
+        npwd.removeClass("is-valid").addClass("is-invalid");
+        swalError("Errore!",
+            "<div class='text-left'>" +
+            "La nuova password deve contenere:<ul>" +
+            "<li>8 caratteri</li>" +
+            "<li>8 una lettera maiuscola</li>" +
+            "<li>8 una lettera minuscla</li>" +
+            "<li>8 una un carattere speciale (!@#$%^&*)</li>" +
+            "</ul></div>");
+    }
+    return false;
+}
+
 /*   ----------------    file control   -----------------------   */
 function checkRequiredFileContent(content) {
     var err = false;
@@ -100,6 +135,7 @@ function checkRequiredFileContent(content) {
     });
     return err ? false : true;
 }
+
 function checkFileExtAndDim(ext) {
     var err = false;
     var extension = '';

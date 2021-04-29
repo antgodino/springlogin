@@ -3,9 +3,9 @@ function logIn() {
         html: '<div class="offset-md-2 col-md-8">' +
             '<form id="login-form">' +
             '<label>Username / Email</label>' +
-            '<input class="form-control obbligatory" name="username" type="text">' +
+            '<input class="form-control obbligatory mb-3" name="username" type="text">' +
             '<label>Password</label>' +
-            '<input class="form-control obbligatory" name="password" type="password">' +
+            '<input class="form-control obbligatory mb-3" name="password" type="password">' +
             '</form>' +
             '</div>',
         confirmButtonText: "Submit",
@@ -27,20 +27,21 @@ function logIn() {
     }).then((result) => {
         if (result.value) {
             showLoad("Attendi ...");
-            $.post("/login/rest/signin", result.value).done(function (resp) {
-                if (resp != null) {
-                    if (resp.tipo == 1) {
+            $.post("/login/rest/signin", result.value).done(function ({tipo = null, stato = null}) {
+                if (stato != null) {
+                    if (stato == 0) {
+                        $("#firstAccessButton").trigger("click");
+                    } else if (tipo == 1) {
                         window.location = "admin";
-                    } else if (resp.tipo == 2) {
+                    } else if (tipo == 2) {
                         window.location = "user";
                     }
                 } else {
                     swalError("errore", "Credenziali errate!");
                 }
             });
-        } else {
-            swal.close();
         }
+        swal.close();
     });
 }
 
