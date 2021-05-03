@@ -16,7 +16,7 @@ public class IndexUserController {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return "redirect:login";
-        } else if (user != null && user.getTipo() == 2) {
+        } else if (user.getTipo() == 2 && user.getStato() == 1) {
             return "User/indexUser";
         } else {
             return "redirect:error/403";

@@ -10,16 +10,15 @@
     <link rel="stylesheet" type="text/css" th:href="@{/js/sweetalert/sweetalert2.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/custom.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome/css/all.min.css}"/>
-
 </head>
 <body class="d-flex flex-column h-100">
 <!-- Begin page content -->
-<main class="container-fluid">
-    <div class="bg-light p-5 rounded">
+<main class="container-fluid p-0">
+    <div class="bg-light p-5 rounded" style="min-height: 500px;">
         <div class="row">
             <div class="col-md-6 center">
                 <h2>Cambio password</h2>
-                <form method="post" id="form">
+                <form method="post" id="form" action="/login/rest/firstacces">
                     <div class="form-group mb-3">
                         <label for="oldpassword">Vecchia Password</label>
                         <input type="password" class="form-control obbligatory" id="oldpassword" name="oldpassword"
@@ -45,19 +44,17 @@
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" th:src="@{/js/JQueryForm/jquery.form.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/sweetalert/sweetalert2.all.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/fieldUtils.js}"></script>
 <script type="text/javascript" th:src="@{/js/jsUtils.js}"></script>
-<script type="text/javascript" th:src="@{/jspage/login.js}"></script>
-<script>
-    function ctrlForm() {
-        var err = checkObblFieldsContent($("#form"));
-        if (!err) {
-            err = !checkChagePwd($("#newpassword"), $("#newpassword2"));
-        }
-        return err;
-    }
+<script type="text/javascript" th:src="@{/jspage/firstaccess.js}"></script>
 
+<script th:if="${user.id==null || user.stato==0}" type="text/javascript">
+    jQuery(document).ready(() => {
+        swalWarning("<h3><b>Cambio password</b></h3><br>", "<h5>Se si è aperta questa pagina vuol dire che sei al primo accesso oppure hai effettuato il recupero password.</h5>")
+    });
 </script>
+
 </body>
 </html>

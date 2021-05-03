@@ -15,17 +15,19 @@ public class User {
     private String email;
     private int tipo;
     private int stato;
+    private String path;
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String email, int tipo, int stato) {
+    public User(Long id, String username, String password, String email, int tipo, int stato, String path) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.tipo = tipo;
         this.stato = stato;
+        this.path = path;
     }
 
     public Long getId() {
@@ -76,6 +78,14 @@ public class User {
         this.stato = stato;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -85,6 +95,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", tipo=" + tipo +
                 ", stato=" + stato +
+                ", path='" + path + '\'' +
                 '}';
     }
 }

@@ -1,18 +1,10 @@
-/*  text manipulation  */
-function capitalize(s) {
-    return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-function currencyFormat(num) {
-    return '&euro;' + num.toFixed(0).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-}
-
-function currencyFormatDecimal(num) {
-    return '&euro;' + num.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-}
+/*    fortmatting    field    */
+const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+const currencyFormat = (num) => '&euro;' + num.toFixed(0).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+const currencyFormatDecimal = (num) => '&euro;' + num.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
 
 /*   swal function    */
-function swalCountDownFunc(title, message, func) {
+const swalCountDownFunc = (title, message, func) => {
     let timerInterval;
     Swal.fire({
         title: '<h2 class="text-danger"><b>' + title + '</b></h2><br>',
@@ -39,11 +31,11 @@ function swalCountDownFunc(title, message, func) {
         func();
     });
 }
-function showLoad(title) {
+const showLoad = (title) => {
     swal.fire({
         title: title,
         text: '',
-        onOpen: function () {
+        onOpen: () => {
             swal.showLoading()
         },
         customClass: {
@@ -51,37 +43,7 @@ function showLoad(title) {
         }
     });
 }
-function swalSuccessReload(title, HTMLmessage) {
-    swal.fire({
-        "title": '<h2 class="text-danger"><b>' + title + '</b></h2><br>',
-        "html": "<h4>" + HTMLmessage + "</h4><br>",
-        "type": "success",
-        "confirmButtonColor": '#363a90',
-        "confirmButtonClass": "btn btn-success",
-        customClass: {
-            container: 'my-swal',
-        }
-    }).then(function () {
-        showLoad();
-        location.reload();
-    });
-}
-function swalSuccessReload2(title, HTMLmessage) {
-    swal.fire({
-        "title": '<h2 class="text-danger"><b>' + title + '</b></h2><br>',
-        "html": HTMLmessage,
-        "type": "success",
-        "confirmButtonColor": '#363a90',
-        "confirmButtonClass": "btn btn-success",
-        customClass: {
-            container: 'my-swal',
-        }
-    }).then(function () {
-        showLoad();
-        location.reload();
-    });
-}
-function swalSuccess(title, HTMLmessage) {
+const swalSuccess = (title, HTMLmessage) => {
     swal.fire({
         "title": '<h2 class="text-danger"><b>' + title + '</b></h2><br>',
         "html": "<h4>" + HTMLmessage + "</h4><br>",
@@ -93,7 +55,37 @@ function swalSuccess(title, HTMLmessage) {
         }
     });
 }
-function swalError(title, message) {
+const swalSuccessReload = (title, HTMLmessage) => {
+    swal.fire({
+        "title": '<h2><b>' + title + '</b></h2><br>',
+        "html": "<h4>" + HTMLmessage + "</h4><br>",
+        "type": "success",
+        "confirmButtonColor": '#363a90',
+        "confirmButtonClass": "btn btn-success",
+        customClass: {
+            container: 'my-swal',
+        }
+    }).then(() => {
+        showLoad();
+        location.reload();
+    });
+}
+const swalSuccessFunction = (title, HTMLmessage, fun) => {
+    swal.fire({
+        "title": '<h2><b>' + title + '</b></h2><br>',
+        "html": "<h4>" + HTMLmessage + "</h4><br>",
+        "type": "success",
+        "confirmButtonColor": '#363a90',
+        "confirmButtonClass": "btn btn-success",
+        customClass: {
+            container: 'my-swal',
+        }
+    }).then(() => {
+        showLoad();
+        fun();
+    });
+}
+const swalError = (title, message) => {
     swal.fire({
         "title": title,
         "html": message,
@@ -104,7 +96,7 @@ function swalError(title, message) {
         }
     });
 }
-function swalWarning(title, message) {
+const swalWarning = (title, message) => {
     swal.fire({
         "title": title,
         "html": message,
@@ -115,7 +107,7 @@ function swalWarning(title, message) {
         }
     });
 }
-function swalConfirm(title, HTMLmessage, func) {
+const swalConfirm = (title, HTMLmessage, func) => {
     swal.fire({
         "title": '<h2 class="text-danger"><b>' + title + '</b></h2><br>',
         "html": "<h4>" + HTMLmessage + "</h4><br>",
@@ -135,4 +127,39 @@ function swalConfirm(title, HTMLmessage, func) {
             swal.close();
         }
     });
+}
+const closeSwal = () => {
+    swal.close()
+};
+
+/*    form submit     */
+function submitForm(form, success_title_msg, success_msg, ctrl, reload) {
+    submitForm(form, success_title_msg, success_msg, ctrl, reload, null);
+}
+
+function submitForm(form, success_title_msg, success_msg, ctrl, reload, func) {
+    if (ctrl) {
+        showLoad();
+        form.ajaxSubmit({
+            error: () => {
+                closeSwal();
+                swalError("Errore", "Riprovare, se l'errore persiste contattare l'assistenza");
+            },
+            success: (resp) => {
+                closeSwal();
+                if (resp.result) {
+                    var message = resp.message != null ? ".<br>" + resp.message : "";
+                    if (!!func) {
+                        swalSuccessFunction(success_title_msg, success_msg + message, func);
+                    } else if (reload) {
+                        swalSuccessReload(success_title_msg, success_msg + message);
+                    } else {
+                        swalSuccess(success_title_msg, success_msg);
+                    }
+                } else {
+                    swalError("Errore!", resp.message);
+                }
+            }
+        });
+    }
 }

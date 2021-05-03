@@ -1,5 +1,9 @@
 $('.fancybox').fancybox();
 
+function fancyBoxClose() {
+    $('div.fancybox-overlay.fancybox-overlay-fixed').css('display', 'none');
+}
+
 $("a.fancySmall").fancybox({
     openEffect: 'elastic',
     closeEffect: 'elastic',
@@ -7,20 +11,6 @@ $("a.fancySmall").fancybox({
     nextEffect: 'fade',
     fitToView: false, // images won't be scaled to fit to browser's height
     maxWidth: "90%" // images won't exceed the browser's width
-});
-
-$('[data-fancybox="fancyDocument"]').fancybox({
-    type: 'iframe',
-    opts: {
-        clickSlide: 'false',
-        clickOutside: 'false',
-        iframe: {
-            css: {
-                width: '300px',
-                height: '800px',
-            }
-        }
-    }
 });
 
 $("a.fancyDocument").fancybox({
@@ -49,8 +39,9 @@ $("a.fancyProfileNoClose").fancybox({
         close: null
     },
     type: 'iframe',
+    'minHeight': 500,
     centerOnScroll: true,
-    overlayOpacity: 0.5,
+    // overlayOpacity: 0.5,
     overlayShow: true
 });
 
@@ -66,7 +57,7 @@ $("a.fancyBoxFullReloadPage").fancybox({
     height: '100%',
     overlayOpacity: 0,
     overlayShow: true,
-    afterClose: function () {
+    afterClose: () => {
         location.reload();
     }
 });

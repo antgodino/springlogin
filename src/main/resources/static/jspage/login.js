@@ -13,8 +13,8 @@ function logIn() {
         customClass: {
             confirmButton: "btn btn-succes",
         },
-        preConfirm: function () {
-            var err = false;
+        preConfirm: () => {
+            let err = false;
             err = checkObblFieldsContent($('#login-form')) ? true : err;
             if (!err) {
                 return new Promise(function (resolve) {
@@ -26,7 +26,7 @@ function logIn() {
         },
     }).then((result) => {
         if (result.value) {
-            showLoad("Attendi ...");
+            // showLoad("Attendi ...");
             $.post("/login/rest/signin", result.value).done(function ({tipo = null, stato = null}) {
                 if (stato != null) {
                     if (stato == 0) {
@@ -44,9 +44,8 @@ function logIn() {
         swal.close();
     });
 }
-
 $(document).ready(function () {
-    $("#loginsubmit").click(function () {
+    $("#loginsubmit").click(() => {
         logIn()
     });
 });

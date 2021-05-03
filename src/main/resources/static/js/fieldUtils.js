@@ -1,14 +1,14 @@
 /*   ----------------    field control   -----------------------   */
-function checkEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (email.val() == '' || !re.test(email.val().toLowerCase())) {
-        email.attr("class", "form-control is-invalid");
-        return true;
-    } else {
-        email.attr("class", "form-control is-valid");
-        return false;
-    }
-}
+ function checkEmail(email) {
+     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+     if (email.val() == '' || !re.test(email.val().toLowerCase())) {
+         email.attr("class", "form-control is-invalid");
+         return true;
+     } else {
+         email.attr("class", "form-control is-valid");
+         return false;
+     }
+ }
 
 function checkCF(cf) {
     var codicefiscale = cf.val();
@@ -52,29 +52,14 @@ function checkCF(cf) {
 }
 
 function checkObblFieldsContent(content) {
-    var err = false;
-    content.find('input.obbligatory').each(function () {
-        if ($(this).val() == '') {
+    let err = false;
+    let elements = [content.find('input.obbligatory'), content.find('textarea.obbligatory'), content.find('select.obbligatory')];
+    elements.forEach((elem) => {
+        if ($(elem).val() == '') {
             err = true;
-            $(this).removeClass("is-valid").addClass("is-invalid");
+            $(elem).removeClass("is-valid").addClass("is-invalid");
         } else {
-            $(this).removeClass("is-invalid").addClass("is-valid");
-        }
-    });
-    content.find('textarea.obbligatory').each(function () {
-        if ($(this).val() == '') {
-            err = true;
-            $(this).removeClass("is-valid").addClass("is-invalid");
-        } else {
-            $(this).removeClass("is-invalid").addClass("is-valid");
-        }
-    });
-    content.find('select.obbligatory').each(function () {
-        if ($(this).val() == '' || $(this).val() == '-') {
-            err = true;
-            $('#' + this.id + '_div').removeClass("is-valid-select").addClass("is-invalid-select");
-        } else {
-            $('#' + this.id + '_div').removeClass("is-invalid-select").addClass("is-valid-select");
+            $(elem).removeClass("is-invalid").addClass("is-valid");
         }
     });
     return err;
@@ -91,14 +76,10 @@ function resetInput() {
     $('div.dropdown.bootstrap-select.form-control.kt-').removeClass('is-valid is-valid-select');
 }
 
-function checkPassword(pwd) {
-    const regex = new RegExp('(?=^.{8,}$)(?=.*\\d)(?=.*[!@#$%^&*]+)(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$');
-    return regex.test(pwd.val())
-}
+const checkPassword = (pwd) => new RegExp('(?=^.{8,}$)(?=.*\\d)(?=.*[!@#$%^&*]+)(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$').test(pwd.val());
 
 function checkChagePwd(npwd, n2pwd) {//return true se è tutto corretto
     if (checkPassword(npwd)) {
-
         if (npwd.val() == n2pwd.val()) {
             npwd.removeClass("is-invalid").addClass("is-valid");
             n2pwd.removeClass("is-invalid").addClass("is-valid");
@@ -111,8 +92,9 @@ function checkChagePwd(npwd, n2pwd) {//return true se è tutto corretto
         n2pwd.removeClass("is-valid").addClass("is-invalid");
         npwd.removeClass("is-valid").addClass("is-invalid");
         swalError("Errore!",
-            "<div class='text-left'>" +
-            "La nuova password deve contenere:<ul>" +
+            "La nuova password deve contenere:" +
+            "<div class='col-md-8 center'>" +
+            "<ul class='text-start'>" +
             "<li>8 caratteri</li>" +
             "<li>8 una lettera maiuscola</li>" +
             "<li>8 una lettera minuscla</li>" +
@@ -125,7 +107,7 @@ function checkChagePwd(npwd, n2pwd) {//return true se è tutto corretto
 /*   ----------------    file control   -----------------------   */
 function checkRequiredFileContent(content) {
     var err = false;
-    content.find('input:file[tipo=obbligatory]').each(function () {
+    content.find('input:file[tipo=obbligatory]').each(() => {
         if ($(this)[0].files.length == 0) {
             err = true;
             $(this).attr("class", "custom-file-input is-invalid");
@@ -140,7 +122,7 @@ function checkFileExtAndDim(ext) {
     var err = false;
     var extension = '';
     if ($('input[type=file]')[0].files.length > 0) {
-        $('input[type=file]').each(function () {
+        $('input[type=file]').each(() => {
             if (typeof this.files[0] !== 'undefined') {
                 extension = this.files[0].name.substring(this.files[0].name.lastIndexOf('.') + 1).toLowerCase();
                 if (!ext.includes(extension.toLowerCase())) {
