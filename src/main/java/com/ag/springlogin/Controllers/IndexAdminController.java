@@ -5,11 +5,11 @@ import com.ag.springlogin.Sevice.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -19,30 +19,16 @@ public class IndexAdminController {
     FileService fileService;
 
     @GetMapping(path = "/admin")
-    public String admin(HttpServletRequest request, Model model) {
-        User user = (User) request.getSession().getAttribute("user");
-
-        if (user == null) {
-            return "redirect:login";
-        } else if (user.getTipo() == 1 && user.getStato() == 1) {
-            return "Admin/indexAdmin";
-        } else {
-            return "redirect:error/403";
-        }
+    public String admin() {
+        return "Admin/indexAdmin";
     }
 
     @PostMapping(path = "/admin")
     public String addUser(@RequestParam(name = "username") String username, @RequestParam(name = "email") String email,
-                          @RequestParam("file") MultipartFile[] file, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
-            return "redirect:login";
-        } else if (user.getTipo() == 1 && user.getStato() == 1) {
-            fileService.multipleUploadFile(file, "C:/mnt");
-            return "Admin/indexAdmin";
-        } else {
-            return "redirect:error/403";
-        }
+                          @RequestParam("file") MultipartFile[] file, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        fileService.multipleUploadFile(file, "C:/mnt");
+        return "Admin/indexAdmin";
     }
 
     @GetMapping(value = "/admin/file/{filePath}/**")

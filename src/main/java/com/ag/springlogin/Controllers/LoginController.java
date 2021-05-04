@@ -2,20 +2,23 @@ package com.ag.springlogin.Controllers;
 
 import com.ag.springlogin.Model.User;
 import com.ag.springlogin.Sevice.UserService;
+import com.ag.springlogin.securityConfig.MyUserDetailService;
 import com.ag.springlogin.utilis.Response;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    MyUserDetailService myUserDetailService;
 
     @GetMapping(path = "/")
     public String WelcomePage() {
@@ -27,21 +30,21 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping(path = "/login/signout")
-    public String logout(HttpServletRequest request, Model model) {
-        request.getSession().invalidate();
-        return "redirect:/login";
-    }
+//    @GetMapping(path = "/login/signout")
+//    public String logout(HttpServletRequest request, Model model) {
+//        request.getSession().invalidate();
+//        return "redirect:/login";
+//    }
 
     @PostMapping(path = "/login/signin")
     @ResponseBody
-    public User LoginSubmit(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password,
-                            HttpServletRequest request) {
-        password = DigestUtils.md5Hex(password);
-        User user = userService.getUser(username, password);
-        if (user != null) {
-            request.getSession().setAttribute("user", user);
-            return user;
+    public User LoginSubmit(HttpSession session, Authentication authentication) {
+        if (authentication != null) {
+            User user = userService.getUserByUsername(authentication.getName());
+            if (user != null) {
+                session.setAttribute("user", user);
+                return user;
+            }
         }
         return null;
     }
@@ -51,9 +54,9 @@ public class LoginController {
     public Response changePassword(@RequestParam(name = "oldpassword") String oldpassword,
                                    @RequestParam(name = "newpassword") String newpassword,
                                    @RequestParam(name = "newpassword2") String newpassword2,
-                                   HttpServletRequest request) {
+                                   HttpSession session) {
         Response response = new Response(false, "");
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) session.getAttribute("user");
         try {
             if (DigestUtils.md5Hex(oldpassword).equals(user.getPassword())) {
                 if (newpassword.equals(newpassword2)) {
@@ -76,7 +79,7 @@ public class LoginController {
     }
 
     @GetMapping(path = "/login/firstacces")
-    public String firstAccess(HttpServletRequest request, Model model) {
+    public String firstAccess() {
         return "firstAccess";
     }
 

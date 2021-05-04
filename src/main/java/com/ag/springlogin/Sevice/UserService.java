@@ -18,6 +18,10 @@ public class UserService {
         return userRepository.findByUsernameAndPassword(username, password);
     }
 
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public void save(User user) {
         userRepository.save(user);
     }

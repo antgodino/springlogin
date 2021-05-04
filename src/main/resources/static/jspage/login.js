@@ -26,24 +26,27 @@ function logIn() {
         },
     }).then((result) => {
         if (result.value) {
-            // showLoad("Attendi ...");
-            $.post("/login/signin", result.value).done(function ({tipo = null, stato = null}) {
-                if (stato != null) {
-                    if (stato == 0) {
-                        $("#firstAccessButton").trigger("click");
-                    } else if (tipo == 1) {
-                        window.location = "admin";
-                    } else if (tipo == 2) {
-                        window.location = "user";
-                    }
-                } else {
-                    swalError("errore", "Credenziali errate!");
+            $.post("/login", result.value).done(() => {
+                    $.post("/login/signin").done(function ({tipo = null, stato = null}) {
+                        if (stato != null) {
+                            if (stato == 0) {
+                                $("#firstAccessButton").trigger("click");
+                            } else if (tipo == 1) {
+                                window.location = "admin";
+                            } else if (tipo == 2) {
+                                window.location = "user";
+                            }
+                        } else {
+                            swalError("errore", "Credenziali errate!");
+                        }
+                    });
                 }
-            });
+            );
         }
         swal.close();
     });
 }
+
 $(document).ready(function () {
     $("#loginsubmit").click(() => {
         logIn()

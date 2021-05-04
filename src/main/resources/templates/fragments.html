@@ -46,7 +46,7 @@
                 </ul>
                 <div class="container-fluid d-flex flex-row-reverse bd-highlight">
                     <a th:if="${user.id == null}" id="loginsubmit" class="btn btn-success">Sign In</a>
-                    <a th:if="${user.id != null}" href="/login/signout" class="btn btn-danger">Sign Out</a>
+                    <a th:if="${user.id != null}" href="/logout" class="btn btn-danger">Sign Out</a>
                     <span th:text="${user.username!=null} ? 'Hello, ' + ${user.username}"
                           class="navbar-brand mb-0 h1"></span>
                 </div>
