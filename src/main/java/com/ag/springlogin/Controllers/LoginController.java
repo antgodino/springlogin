@@ -30,12 +30,6 @@ public class LoginController {
         return "login";
     }
 
-//    @GetMapping(path = "/login/signout")
-//    public String logout(HttpServletRequest request, Model model) {
-//        request.getSession().invalidate();
-//        return "redirect:/login";
-//    }
-
     @PostMapping(path = "/login/signin")
     @ResponseBody
     public User LoginSubmit(HttpSession session, Authentication authentication) {
