@@ -27,7 +27,7 @@ function logIn() {
     }).then((result) => {
         if (result.value) {
             // showLoad("Attendi ...");
-            $.post("/login/rest/signin", result.value).done(function ({tipo = null, stato = null}) {
+            $.post("/login/signin", result.value).done(function ({tipo = null, stato = null}) {
                 if (stato != null) {
                     if (stato == 0) {
                         $("#firstAccessButton").trigger("click");

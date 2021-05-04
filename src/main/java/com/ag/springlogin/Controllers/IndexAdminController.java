@@ -33,9 +33,16 @@ public class IndexAdminController {
 
     @PostMapping(path = "/admin")
     public String addUser(@RequestParam(name = "username") String username, @RequestParam(name = "email") String email,
-                          @RequestParam("file") MultipartFile[] file) {
-        fileService.multipleUploadFile(file, "C:/mnt");
-        return "Admin/indexAdmin";
+                          @RequestParam("file") MultipartFile[] file, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            return "redirect:login";
+        } else if (user.getTipo() == 1 && user.getStato() == 1) {
+            fileService.multipleUploadFile(file, "C:/mnt");
+            return "Admin/indexAdmin";
+        } else {
+            return "redirect:error/403";
+        }
     }
 
     @GetMapping(value = "/admin/file/{filePath}/**")
